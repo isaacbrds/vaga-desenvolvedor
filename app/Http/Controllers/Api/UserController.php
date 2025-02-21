@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Http\Requests\UserRequest;
-use Illuminate\Http\Request;
 use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -43,15 +43,6 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function show(User $user): JsonResponse {
-        $user = User::find($user);
-
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Usuário não encontrado'
-            ], 404);
-        }
-
         return response()->json([
             'status' => true,
             'user' => $user
@@ -73,7 +64,7 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => Hash::make($request->password),
             ]);
             DB::commit();
             return response()->json([
@@ -107,7 +98,7 @@ class UserController extends Controller
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => $request->has('password') ? Hash::make($request->password) : $user->password,
             ]);
             DB::commit();
             return response()->json([
