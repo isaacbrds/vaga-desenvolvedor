@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 use Exception;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -46,7 +47,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function store(Request $request){
+    public function store(UserRequest $request){
         DB::beginTransaction();
 
         try {
@@ -70,7 +71,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, User $user){
+    public function update(UserRequest $request, User $user){
         DB::beginTransaction();
 
         try {
