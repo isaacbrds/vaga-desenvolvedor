@@ -24,7 +24,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to fetch users.',
+                'message' => 'Falha ao buscar usuários.',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -37,7 +37,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'User not found'
+                'message' => 'Usuário não encontrado'
             ], 404);
         }
 
