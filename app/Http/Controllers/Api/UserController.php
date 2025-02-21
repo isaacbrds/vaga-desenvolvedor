@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
-    public function index(){
+    /**
+     * Mostra todos os usuários cadastrados.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse {
         try {
             $users = User::orderBy('id', 'DESC')->paginate(5);
     
@@ -31,7 +36,13 @@ class UserController extends Controller
     }
 
 
-    public function show(User $user){
+    /**
+     * Mostra um usuário específico.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function show(User $user): JsonResponse {
         $user = User::find($user);
 
         if (!$user) {
@@ -47,7 +58,15 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function store(UserRequest $request){
+    /**
+     * Cria um novo usuário.
+     *
+     * <b>POST /api/users</b>
+     *
+     * @param UserRequest $request
+     * @return JsonResponse
+     */
+    public function store(UserRequest $request): JsonResponse {
         DB::beginTransaction();
 
         try {
@@ -71,7 +90,17 @@ class UserController extends Controller
         }
     }
 
-    public function update(UserRequest $request, User $user){
+    /**
+     * Atualiza um usuário existente.
+     *
+     * <b>PUT /api/users/{user}</b>
+     *
+     * @param UserRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
+
+    public function update(UserRequest $request, User $user): JsonResponse {
         DB::beginTransaction();
 
         try {
@@ -95,7 +124,15 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $user){
+    /**
+     * Deleta um usuário existente.
+     *
+     * <b>DELETE /api/users/{user}</b>
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function destroy(User $user): JsonResponse {
         try {
             $user->delete();
             return response()->json([
