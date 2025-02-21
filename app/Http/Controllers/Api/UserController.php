@@ -69,4 +69,43 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    public function update(Request $request, User $user){
+        DB::beginTransaction();
+
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'user' => $user,
+                'message' => 'Usuário atualizado com sucesso'
+            ], 200);
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Usuário não atualizado'
+            ], 400);
+        }
+    }
+
+    public function destroy(User $user){
+        try {
+            $user->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário deletado com sucesso'
+            ], 200);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => 'Usuário nao deletado'
+            ], 400);
+        }
+    }
 }
